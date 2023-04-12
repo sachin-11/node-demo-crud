@@ -1,0 +1,17 @@
+service: demo-crud-api
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  memorySize: 2048
+  stage: dev
+  timeout: 15
+  region: ap-south-1
+  runtime: nodejs18.x
+
+functions:
+  hello:
+    handler: handler.nodeDemo
+    events:
+     - http: ANY /{proxy+}
+     - http: ANY /
