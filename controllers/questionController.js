@@ -18,8 +18,15 @@ if (req.query.searchKey) {
         ],
     })
 }
-  const questions = await Question.find(search)
-  res.status(200).json({ success: true, data: questions });
+
+const page = parseInt(req.query.page) || 1; // Get current page from query parameters, default to 1
+const limit = parseInt(req.query.limit) || 10;
+
+const totalCount = await Question.countDocuments(); // Get total count of documents in the collection
+const totalPages = Math.ceil(totalCount / limit); // Calculate total number of pages based on total count and limit
+
+  const questions = await Question.find(search).skip((page - 1) * limit).limit(limit)
+  res.status(200).json({ success: true, data: questions, page, totalPages });
 });
 
 //@desc Get single Question

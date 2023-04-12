@@ -18,9 +18,16 @@ if (req.query.searchKey) {
         ],
     })
 }
-  const tips = await Tips.find(search)
 
-  res.status(200).json({ success: true, data: tips });
+const page = parseInt(req.query.page) || 1; // Get current page from query parameters, default to 1
+const limit = parseInt(req.query.limit) || 10;
+
+const totalCount = await Tips.countDocuments(); // Get total count of documents in the collection
+const totalPages = Math.ceil(totalCount / limit); // Calculate total number of pages based on total count and limit
+
+const tips = await Tips.find(search).skip((page - 1) * limit).limit(limit)
+
+  res.status(200).json({ success: true, data: tips, page, totalPages });
 });
 
 //@desc Get single tips
