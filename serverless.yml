@@ -15,3 +15,6 @@ functions:
     events:
      - http: ANY /{proxy+}
      - http: ANY /
+    environment:
+      NODE_ENV: development
+      MONGO_URI: mongodb+srv://sachin:sachin@cluster0.frgwbbs.mongodb.net/test
