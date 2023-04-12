@@ -1,0 +1,74 @@
+const ErrorResponse = require('../utils/errorResponse');
+const asyncHandler = require('../middleware/async');
+const Question = require('../models/questionMode');
+const { questionsValidationSchema } = require('../validations/validation')
+
+//@desc Get Questions
+//@route GET /api/v1/questions
+//@access public
+
+exports.getQuestions = asyncHandler(async (req, res, next) => {
+  let search = {
+    $and: [{ status: true }],
+}
+if (req.query.searchKey) {
+    search.$and.push({
+        $or: [
+            { question: { $regex: new RegExp(req.query.searchKey, 'i') } },
+        ],
+    })
+}
+  const questions = await Question.find(search)
+  res.status(200).json({ success: true, data: questions });
+});
+
+//@desc Get single Question
+//@route GET /api/v1/questions/:id
+//@access public
+
+exports.getQuestion = asyncHandler(async (req, res, next) => {
+  const questions = await Question.findById(req.params.id)
+
+  if (!questions) {
+    return next(new ErrorResponse(`No questions with id ${req.params.id}`), 404);
+  }
+
+  res.status(200).json({ success: true, count: questions.length, data: questions });
+});
+
+//@desc Add Questions
+//@route POST  /api/v1/questions
+//@access Private
+
+exports.createQuestions = asyncHandler(async (req, res, next) => {
+
+  const questionData = req.body;
+  const result = questionsValidationSchema.validate(questionData);
+
+  if (result.error) {
+    return res.status(400).json({ error: result.error.details[0].message });
+  }
+
+  const questions = await Question.create(questionData);
+  res.status(200).json({ success: true, data: questions });
+});
+
+//@desc update Questions
+//@route PUT  /api/v1/questions/:id
+//@access Private
+
+exports.updateQuestions = asyncHandler(async (req, res, next) => {
+  const { questionsId } = req.params;
+  const questions = await Question.findByIdAndUpdate(questionsId, {$set: req.body}, { new: true});
+  res.status(200).json({ success: true, data: questions });
+});
+
+//@desc delete Questions
+//@route DELETE  /api/v1/questions/:id
+//@access Private
+
+exports.deleteQuestions = asyncHandler(async (req, res, next) => {
+    const { questionsId } = req.params;
+     await Question.findByIdAndDelete(questionsId);
+    res.status(200).json({ success: true, message: 'Questions Delete Succesfully', data: {} });
+  });
