@@ -31,9 +31,31 @@ const exampleValidationSchema = Joi.object({
   status: Joi.boolean().optional(),
 });
 
+const registerValidationSchema = Joi.object({
+  name: Joi.string().required(),
+  email: Joi.string().email().required(),
+  password: Joi.string()
+  .min(8)
+  .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]*$/)
+  .message('"{#label}" must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one numeric digit, and one special character.')
+}).required();
+
+
+const loginValidationSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string()
+  .min(8)
+  .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]*$/)
+  .message('"{#label}" must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one numeric digit, and one special character.')
+}).required();
+
+
+
 module.exports = {
   userValidationSchema,
   questionsValidationSchema,
   tipsValidationSchema,
   exampleValidationSchema,
+  loginValidationSchema,
+  registerValidationSchema
 };

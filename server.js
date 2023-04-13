@@ -19,6 +19,7 @@ const users = require('./routes/userRoutes');
 const examples = require('./routes/exampleRoutes');
 const tips = require('./routes/tipsroutes');
 const questions = require('./routes/questionsRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use('/api/v1/users', users);
 app.use('/api/v1/tips', tips);
 app.use('/api/v1/questions', questions);
 app.use('/api/v1/examples', examples);
+app.use('/api/v1/auth', authRoutes);
 
  const server = app.listen(PORT, () => {
   console.log(
