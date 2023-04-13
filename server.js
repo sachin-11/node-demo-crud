@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
+const cors = require('cors')
 const errorHandler = require('./middleware/error');
 
 const morgan = require('morgan');
@@ -24,6 +25,7 @@ const authRoutes = require('./routes/authRoutes');
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 //Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
