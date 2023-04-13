@@ -19,6 +19,8 @@ git clone https://github.com/sachin-11/node-demo-crud.git
 cd node-demo-crud
 npm install
 
+npm start
+
 
 Contributing
 Contributions are welcome! If you'd like to contribute to this project, please open an issue or submit a pull request.
