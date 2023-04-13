@@ -39,7 +39,7 @@ exports.getExample = asyncHandler(async (req, res, next) => {
   const example = await Example.findById(req.params.id)
 
   if (!example) {
-    return next(new ErrorResponse(`No example with id ${req.params.id}`), 404);
+    return res.status(401).json({ message: 'example with id not found'});;
   }
 
   res.status(200).json({ success: true, count: example.length, data: example });

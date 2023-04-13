@@ -38,7 +38,7 @@ exports.getTip = asyncHandler(async (req, res, next) => {
   const tips = await Tips.findById(req.params.id)
 
   if (!tips) {
-    return next(new ErrorResponse(`No tips with id ${req.params.id}`), 404);
+    return res.status(401).json({ message: 'tips with id not found'});;
   }
 
   res.status(200).json({ success: true, count: tips.length, data: tips });

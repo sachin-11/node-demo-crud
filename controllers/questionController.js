@@ -37,7 +37,7 @@ exports.getQuestion = asyncHandler(async (req, res, next) => {
   const questions = await Question.findById(req.params.id)
 
   if (!questions) {
-    return next(new ErrorResponse(`No questions with id ${req.params.id}`), 404);
+    return res.status(401).json({ message: 'questions with id not found'}); ;
   }
 
   res.status(200).json({ success: true, count: questions.length, data: questions });
